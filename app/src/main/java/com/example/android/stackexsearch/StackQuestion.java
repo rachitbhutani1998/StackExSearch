@@ -1,32 +1,59 @@
 package com.example.android.stackexsearch;
 
+import java.util.ArrayList;
+
 public class StackQuestion {
 
-    private String display_name;
-    private String profile_image;
-    private String title;
-    private String link;
+    private ArrayList<SingleQuestion> items;
 
-    public StackQuestion(String display_name, String profile_image, String title, String link) {
-        this.display_name = display_name;
-        this.profile_image = profile_image;
-        this.title = title;
-        this.link = link;
+    public StackQuestion(ArrayList<SingleQuestion> items) {
+        this.items = items;
     }
 
-    public String getDisplay_name() {
-        return display_name;
+    public ArrayList<SingleQuestion> getItems() {
+        return items;
     }
 
-    public String getProfile_image() {
-        return profile_image;
+    public class QuestionOwner {
+        private String display_name;
+        private String profile_image;
+
+        public QuestionOwner(String display_name, String profile_image) {
+            this.display_name = display_name;
+            this.profile_image = profile_image;
+        }
+
+        public String getDisplay_name() {
+            return display_name;
+        }
+
+        public String getProfile_image() {
+            return profile_image;
+        }
     }
 
-    public String getTitle() {
-        return title;
-    }
+    public class SingleQuestion {
+        private QuestionOwner owner;
+        private String title;
+        private String link;
 
-    public String getLink() {
-        return link;
+        public SingleQuestion(QuestionOwner owner, String title, String link) {
+            this.owner = owner;
+            this.title = title;
+            this.link = link;
+        }
+
+        public QuestionOwner getOwner() {
+            return owner;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getLink() {
+            return link;
+        }
+
     }
 }

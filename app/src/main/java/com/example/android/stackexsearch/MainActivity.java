@@ -5,13 +5,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -36,11 +42,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        queryParameters= new HashMap<>();
         mQuestionsRV = findViewById(R.id.questions_rv);
         mLoadingPB = findViewById(R.id.loading_pb);
         mErrorTV = findViewById(R.id.error_tv);
+        mErrorTV.setVisibility(View.VISIBLE);
+
 
         mQuestionsRV.setLayoutManager(new LinearLayoutManager(this));
 
@@ -58,25 +65,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 queryParameters.put("tagged", s);
+                queryParameters.put("site","stackoverflow");
+
+
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(StackSearchAPI.BASE_URL)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
                 StackSearchAPI searchAPI = retrofit.create(StackSearchAPI.class);
-                Call<ArrayList<StackQuestion>> questionCall = searchAPI.getQuestions(queryParameters);
+                Call<StackQuestion> questionCall = searchAPI.getQuestions(queryParameters);
 
 
                 //TODO: Callback as list of StackQuestion
-                questionCall.enqueue(new Callback<ArrayList<StackQuestion>>() {
+                questionCall.enqueue(new Callback<StackQuestion>() {
                     @Override
-                    public void onResponse(Call<ArrayList<StackQuestion>> call, Response<ArrayList<StackQuestion>> response) {
-
+                    public void onResponse(Call<StackQuestion> call, Response<StackQuestion> response) {
+                        if (response.body() != null)
+                            Log.e("TAGGER", "onResponse: " + response.body().getItems().get(0).getOwner().getDisplay_name());
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<StackQuestion>> call, Throwable t) {
-
+                    public void onFailure(Call<StackQuestion> call, Throwable t) {
+                        mErrorTV.setText(t.toString());
                     }
                 });
                 return true;
