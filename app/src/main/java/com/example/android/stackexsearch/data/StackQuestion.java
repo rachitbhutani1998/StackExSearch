@@ -5,11 +5,6 @@ import java.util.ArrayList;
 public class StackQuestion {
 
     private ArrayList<SingleQuestion> items;
-    private int quota_remaining;
-
-    public int getQuota_remaining() {
-        return quota_remaining;
-    }
 
     public StackQuestion(ArrayList<SingleQuestion> items) {
         this.items = items;
@@ -28,11 +23,11 @@ public class StackQuestion {
             this.profile_image = profile_image;
         }
 
-        public String getDisplay_name() {
+        String getDisplay_name() {
             return display_name;
         }
 
-        public String getProfile_image() {
+        String getProfile_image() {
             return profile_image;
         }
     }

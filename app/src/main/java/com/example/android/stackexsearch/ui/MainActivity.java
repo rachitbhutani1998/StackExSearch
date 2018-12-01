@@ -18,11 +18,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.stackexsearch.network.NetworkUtils;
-import com.example.android.stackexsearch.data.QuestionAdapter;
 import com.example.android.stackexsearch.R;
+import com.example.android.stackexsearch.data.QuestionAdapter;
 import com.example.android.stackexsearch.data.StackQuestion;
 import com.example.android.stackexsearch.data.StackQuestion.SingleQuestion;
+import com.example.android.stackexsearch.network.NetworkUtils;
 import com.example.android.stackexsearch.network.StackSearchAPI;
 
 import java.util.ArrayList;
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar mLoadingPB;
     TextView mErrorTV;
     SwipeRefreshLayout mRefreshLayout;
+    SearchView searchView;
 
     Map<String, String> queryParameters;
     ArrayList<SingleQuestion> questionList;
@@ -53,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
     String defaultSearchString;
     String defaultSearchSite = "stackoverflow";
     String searchString;
+
     int pageNo = 1;
+    boolean isDefaultStringSearched;
 
     static String SITE_PARAM = "site";
     static String SORT_PARAM = "sort";
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (!defaultSearchString.isEmpty()) {
             loadData(defaultSearchString);
+            isDefaultStringSearched = true;
             searchString = defaultSearchString;
             mErrorTV.setText(getString(R.string.loading_tv));
         } else mErrorTV.setText(R.string.start_search);
@@ -110,7 +114,9 @@ public class MainActivity extends AppCompatActivity {
             public void onRefresh() {
                 questionList.clear();
                 getDataFromSharedPreference();
-                loadData(searchString);
+                if (isDefaultStringSearched)
+                    loadData(defaultSearchString);
+                else loadData(searchString);
                 mRefreshLayout.setRefreshing(false);
             }
         });
@@ -130,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.search_menu, menu);
         MenuItem item = menu.findItem(R.id.search);
 
-        final SearchView searchView = (SearchView) item.getActionView();
+        searchView = (SearchView) item.getActionView();
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -139,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!searchString.equals(s)) {
                     questionList.clear();
                     pageNo = 1;
+                    isDefaultStringSearched = false;
                     searchString = s;
                     loadData(s);
                     mErrorTV.setVisibility(View.VISIBLE);
@@ -182,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
                     mLoadingPB.setVisibility(View.INVISIBLE);
 
                     if (response.body() != null) {
-                        Toast.makeText(MainActivity.this, String.valueOf(response.body().getQuota_remaining()), Toast.LENGTH_SHORT).show();
 
                         //Populating the list
                         questionList.addAll(questionList.size(), response.body().getItems());
