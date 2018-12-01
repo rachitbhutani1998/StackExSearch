@@ -7,7 +7,7 @@ To build the application on your own:
 	git clone https://github.com/rachitbhutani1998/StackExSearch.git
 	```
 	or extract the downloaded `.zip` file.
-- Open Android Studio and select Import project(Gradle,Eclipse ADT, etc.)
+- Open Android Studio and select Import project(Gradle,Eclipse ADT, etc.) to open the project.
 - After a successful build, connect your device or turn on the Android Emulator and run the app on preferred device.
 ## Libraries Used
 - Retrofit
