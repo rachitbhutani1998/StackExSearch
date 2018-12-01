@@ -1,4 +1,4 @@
-package com.example.android.stackexsearch;
+package com.example.android.stackexsearch.data;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,7 @@ public class StackQuestion {
         this.items = items;
     }
 
-    ArrayList<SingleQuestion> getItems() {
+    public ArrayList<SingleQuestion> getItems() {
         return items;
     }
 
@@ -28,11 +28,11 @@ public class StackQuestion {
             this.profile_image = profile_image;
         }
 
-        String getDisplay_name() {
+        public String getDisplay_name() {
             return display_name;
         }
 
-        String getProfile_image() {
+        public String getProfile_image() {
             return profile_image;
         }
     }
@@ -48,7 +48,7 @@ public class StackQuestion {
             this.link = link;
         }
 
-        QuestionOwner getOwner() {
+        public QuestionOwner getOwner() {
             return owner;
         }
 

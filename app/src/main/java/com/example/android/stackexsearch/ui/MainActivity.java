@@ -1,10 +1,11 @@
-package com.example.android.stackexsearch;
+package com.example.android.stackexsearch.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.stackexsearch.StackQuestion.SingleQuestion;
+import com.example.android.stackexsearch.network.NetworkUtils;
+import com.example.android.stackexsearch.data.QuestionAdapter;
+import com.example.android.stackexsearch.R;
+import com.example.android.stackexsearch.data.StackQuestion;
+import com.example.android.stackexsearch.data.StackQuestion.SingleQuestion;
+import com.example.android.stackexsearch.network.StackSearchAPI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mQuestionsRV;
     ProgressBar mLoadingPB;
     TextView mErrorTV;
+    SwipeRefreshLayout mRefreshLayout;
 
     Map<String, String> queryParameters;
     ArrayList<SingleQuestion> questionList;
@@ -63,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         //Defining UI elements
         mQuestionsRV = findViewById(R.id.questions_rv);
         mLoadingPB = findViewById(R.id.loading_pb);
+        mRefreshLayout = findViewById(R.id.refresh_layout);
         mErrorTV = findViewById(R.id.error_tv);
         mErrorTV.setVisibility(View.VISIBLE);
 
@@ -73,12 +81,8 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new QuestionAdapter(MainActivity.this, questionList);
         preferences = getSharedPreferences(getString(R.string.preference_root_key), Context.MODE_PRIVATE);
 
+        getDataFromSharedPreference();
 
-        //Getting saved data from SharedPreferences
-        sortParameter = getResources().getStringArray(R.array.sort_array)[preferences.getInt(getString(R.string.sort_preference), 0)];
-        orderParameter = getResources().getStringArray(R.array.order_array)[preferences.getInt(getString(R.string.order_preference), 0)];
-        defaultSearchString = preferences.getString(getString(R.string.category_pref), "Android");
-//        Toast.makeText(this, defaultSearchString.concat(" ").concat(sortParameter).concat(orderParameter), Toast.LENGTH_SHORT).show();
         if (!defaultSearchString.isEmpty()) {
             loadData(defaultSearchString);
             searchString = defaultSearchString;
@@ -101,6 +105,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                questionList.clear();
+                getDataFromSharedPreference();
+                loadData(searchString);
+                mRefreshLayout.setRefreshing(false);
+            }
+        });
+
+    }
+
+    //Getting saved data from SharedPreferences
+    private void getDataFromSharedPreference() {
+        sortParameter = getResources().getStringArray(R.array.sort_array)[preferences.getInt(getString(R.string.sort_preference), 0)];
+        orderParameter = getResources().getStringArray(R.array.order_array)[preferences.getInt(getString(R.string.order_preference), 0)];
+        defaultSearchString = preferences.getString(getString(R.string.category_pref), "Android");
     }
 
     @Override
@@ -117,8 +138,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(final String s) {
                 if (!searchString.equals(s)) {
                     questionList.clear();
+                    pageNo = 1;
                     searchString = s;
                     loadData(s);
+                    mErrorTV.setVisibility(View.VISIBLE);
                 } else
                     Toast.makeText(MainActivity.this, "Same query requested.", Toast.LENGTH_SHORT).show();
                 searchView.clearFocus();
@@ -157,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(@NonNull Call<StackQuestion> call, @NonNull Response<StackQuestion> response) {
                     mLoadingPB.setVisibility(View.INVISIBLE);
+
                     if (response.body() != null) {
                         Toast.makeText(MainActivity.this, String.valueOf(response.body().getQuota_remaining()), Toast.LENGTH_SHORT).show();
 

@@ -1,4 +1,4 @@
-package com.example.android.stackexsearch;
+package com.example.android.stackexsearch.ui;
 
 
 import android.content.Context;
@@ -15,6 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.example.android.stackexsearch.R;
 
 import java.util.Objects;
 
@@ -66,6 +69,7 @@ public class SettingsFragment extends DialogFragment {
                             .putString(getString(R.string.category_pref), favEditText.getText().toString().trim());
                     preferenceEditor.apply();
                     SettingsFragment.this.dismiss();
+                    Toast.makeText(getContext(), "Swipe down to refresh your results.", Toast.LENGTH_SHORT).show();
                 }
             }
         });

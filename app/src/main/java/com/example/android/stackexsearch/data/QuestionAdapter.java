@@ -1,4 +1,4 @@
-package com.example.android.stackexsearch;
+package com.example.android.stackexsearch.data;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,7 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.android.stackexsearch.StackQuestion.SingleQuestion;
+import com.example.android.stackexsearch.R;
+import com.example.android.stackexsearch.data.StackQuestion.SingleQuestion;
 
 import java.util.ArrayList;
 

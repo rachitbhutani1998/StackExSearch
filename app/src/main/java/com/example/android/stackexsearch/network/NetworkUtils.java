@@ -1,4 +1,4 @@
-package com.example.android.stackexsearch;
+package com.example.android.stackexsearch.network;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

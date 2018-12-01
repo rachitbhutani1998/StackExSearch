@@ -1,4 +1,6 @@
-package com.example.android.stackexsearch;
+package com.example.android.stackexsearch.network;
+
+import com.example.android.stackexsearch.data.StackQuestion;
 
 import java.util.Map;
 
