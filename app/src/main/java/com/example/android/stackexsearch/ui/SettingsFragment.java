@@ -44,6 +44,7 @@ public class SettingsFragment extends DialogFragment {
         final Spinner sortSpinner = rootView.findViewById(R.id.sort_spinner);
         final Spinner orderSpinner = rootView.findViewById(R.id.order_spinner);
 
+        //Preparing the spinners
         ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(getActivity(), R.array.sort_array, android.R.layout.simple_spinner_item);
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(sortAdapter);
@@ -56,7 +57,7 @@ public class SettingsFragment extends DialogFragment {
         orderSpinner.setSelection(preferences.getInt(getString(R.string.order_preference), 0));
 
         final EditText favEditText = rootView.findViewById(R.id.fav_et);
-        favEditText.setText(preferences.getString(getString(R.string.category_pref), "Android"));
+        favEditText.setText(preferences.getString(getString(R.string.category_pref), getString(R.string.dummy_category)));
 
         Button saveSettingsButton = rootView.findViewById(R.id.save_btn);
         saveSettingsButton.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +70,7 @@ public class SettingsFragment extends DialogFragment {
                             .putString(getString(R.string.category_pref), favEditText.getText().toString().trim());
                     preferenceEditor.apply();
                     SettingsFragment.this.dismiss();
-                    Toast.makeText(getContext(), "Swipe down to refresh your results.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.refresh_prompt, Toast.LENGTH_SHORT).show();
                 }
             }
         });

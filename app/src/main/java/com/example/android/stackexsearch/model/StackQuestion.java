@@ -1,4 +1,4 @@
-package com.example.android.stackexsearch.data;
+package com.example.android.stackexsearch.model;
 
 import java.util.ArrayList;
 
@@ -23,11 +23,11 @@ public class StackQuestion {
             this.profile_image = profile_image;
         }
 
-        String getDisplay_name() {
+        public String getDisplay_name() {
             return display_name;
         }
 
-        String getProfile_image() {
+        public String getProfile_image() {
             return profile_image;
         }
     }

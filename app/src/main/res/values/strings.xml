@@ -14,6 +14,9 @@
     <string name="category_pref">category_pref</string>
     <string name="no_internet">You need to check your internet connection!!</string>
     <string name="preference_root_key">StackExSearch.Preferences</string>
+    <string name="dummy_category">Android</string>
+    <string name="query_repeated">Same Request</string>
+    <string name="refresh_prompt">Pull down to refresh the results</string>
 
     <string-array name="sort_array">
         <item>activity</item>

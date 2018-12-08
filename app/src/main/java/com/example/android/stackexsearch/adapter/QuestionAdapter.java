@@ -1,4 +1,4 @@
-package com.example.android.stackexsearch.data;
+package com.example.android.stackexsearch.adapter;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.android.stackexsearch.R;
-import com.example.android.stackexsearch.data.StackQuestion.SingleQuestion;
+import com.example.android.stackexsearch.model.StackQuestion.SingleQuestion;
 
 import java.util.ArrayList;
 
