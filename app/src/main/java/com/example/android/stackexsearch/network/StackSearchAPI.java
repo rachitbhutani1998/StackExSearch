@@ -4,6 +4,7 @@ import com.example.android.stackexsearch.model.StackQuestion;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.QueryMap;
@@ -11,6 +12,6 @@ import retrofit2.http.QueryMap;
 public interface StackSearchAPI {
 
     @GET("search")
-    Call<StackQuestion> getQuestions(@QueryMap Map<String, String> query);
+    Observable<StackQuestion> getQuestions(@QueryMap Map<String, String> query);
 
 }

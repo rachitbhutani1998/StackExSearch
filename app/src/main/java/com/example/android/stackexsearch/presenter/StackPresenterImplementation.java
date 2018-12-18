@@ -1,14 +1,18 @@
 package com.example.android.stackexsearch.presenter;
 
+import android.util.Log;
+
 import com.example.android.stackexsearch.model.StackQuestion;
 import com.example.android.stackexsearch.network.StackSearchAPI;
 import com.example.android.stackexsearch.ui.StackView;
 
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class StackPresenterImplementation implements StackPresenter {
     private StackView view;
@@ -22,19 +26,25 @@ public class StackPresenterImplementation implements StackPresenter {
     @Override
     public void getQuestions(Map<String, String> query) {
         view.showProgressDialog();
-        Call<StackQuestion> questionCall = api.getQuestions(query);
-        questionCall.enqueue(new Callback<StackQuestion>() {
-            @Override
-            public void onResponse(Call<StackQuestion> call, Response<StackQuestion> response) {
-                view.updateRecycleView(response.body());
-                view.hideProgressDialog();
-            }
+        Observable<StackQuestion> questionCall = api.getQuestions(query);
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+        compositeDisposable.add(questionCall.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<StackQuestion>() {
             @Override
-            public void onFailure(Call<StackQuestion> call, Throwable t) {
-                view.showError(t.getLocalizedMessage());
+            public void accept(StackQuestion stackQuestion) throws Exception {
+                Log.e("TAG", "accept: got response");
                 view.hideProgressDialog();
+                view.updateRecycleView(stackQuestion);
             }
-        });
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                Log.e("TAG", "accept: got error");
+                view.hideProgressDialog();
+                view.showError(throwable.getLocalizedMessage());
+            }
+        }));
+
     }
+
 }

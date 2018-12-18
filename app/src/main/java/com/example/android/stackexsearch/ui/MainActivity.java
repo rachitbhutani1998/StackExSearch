@@ -236,4 +236,9 @@ public class MainActivity extends AppCompatActivity implements StackView {
     public void hideProgressDialog() {
         mLoadingPB.setVisibility(View.INVISIBLE);
     }
+
+    @Override
+    public void observeOnData(StackQuestion sq) {
+
+    }
 }
