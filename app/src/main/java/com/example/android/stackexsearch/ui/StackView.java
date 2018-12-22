@@ -12,6 +12,4 @@ public interface StackView {
 
     void hideProgressDialog();
 
-    void observeOnData(StackQuestion sq);
-
 }

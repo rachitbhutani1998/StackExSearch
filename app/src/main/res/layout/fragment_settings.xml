@@ -1,86 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context=".ui.SettingsFragment">
+    tools:context=".ui.SettingsFragment"
+    tools:layout_editor_absoluteY="81dp">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:text="Sort by:"
+        android:text="@string/sort_by"
         android:textColor="@android:color/black"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/sort_spinner"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/sort_spinner"
         android:layout_margin="5dp"
-        android:text="Order by:"
+        android:text="@string/order_by"
         android:textColor="@android:color/black"
-        android:textSize="15sp" />
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sort_spinner" />
 
     <Spinner
         android:id="@+id/order_spinner"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/sort_spinner"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sort_spinner" />
 
     <TextView
         android:id="@+id/fav_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/order_spinner"
-        android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
-        android:text="Favorite Category:"
+        android:layout_marginTop="5dp"
+        android:text="@string/favorite_category"
         android:textColor="@android:color/black"
-        android:textSize="15sp" />
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/order_spinner" />
 
     <EditText
         android:id="@+id/fav_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/fav_tv"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:inputType="text"
         android:hint="@string/type_here"
+        android:inputType="text"
         android:maxLines="1"
-        android:textSize="15sp" />
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fav_tv"
+        tools:ignore="Autofill" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/fav_et"
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
-        android:text="Questions from above category will be shown on app launch."
-        android:textSize="12sp" />
+        android:text="@string/fav_category_desc"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fav_et" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/fav_et"
         android:id="@+id/save_btn"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="50dp"
-        android:background="?android:selectableItemBackground"
-        android:text="Save"
-        android:textColor="@color/colorPrimary"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:text="@string/save"
+        android:textAllCaps="true"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
-</RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

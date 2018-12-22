@@ -11,7 +11,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NetworkUtils {
 
-    private static Retrofit retrofit;
+
+    public static String BASE_URL = "https://api.stackexchange.com/2.2/search/";
 
     //Check network availability
     public static boolean isNetworkAvailable(Context context) {
@@ -21,18 +22,6 @@ public class NetworkUtils {
         if (connectivityManager != null)
             activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
-
-    //Instantiate retrofit
-    public static Retrofit getRetrofit() {
-        String BASE_URL = "https://api.stackexchange.com/2.2/";
-        if (retrofit == null)
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build();
-        return retrofit;
     }
 
 }

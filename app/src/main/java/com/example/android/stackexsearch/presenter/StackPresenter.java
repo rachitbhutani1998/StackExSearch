@@ -1,9 +1,11 @@
 package com.example.android.stackexsearch.presenter;
 
+import android.content.Context;
+
 import java.util.Map;
 
 public interface StackPresenter {
 
-    void getQuestions(Map<String, String> query);
+    void getQuestions(Context context,Map<String, String> query);
 
 }

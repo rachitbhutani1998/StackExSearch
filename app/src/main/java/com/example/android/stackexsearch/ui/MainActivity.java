@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +25,6 @@ import com.example.android.stackexsearch.adapter.QuestionAdapter;
 import com.example.android.stackexsearch.model.StackQuestion;
 import com.example.android.stackexsearch.model.StackQuestion.SingleQuestion;
 import com.example.android.stackexsearch.network.NetworkUtils;
-import com.example.android.stackexsearch.network.StackSearchAPI;
 import com.example.android.stackexsearch.presenter.StackPresenter;
 import com.example.android.stackexsearch.presenter.StackPresenterImplementation;
 
@@ -31,12 +32,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements StackView {
 
+    @BindView(R.id.questions_rv)
     RecyclerView mQuestionsRV;
+
+    @BindView(R.id.loading_pb)
     ProgressBar mLoadingPB;
+
+    @BindView(R.id.error_tv)
     TextView mErrorTV;
+
+    @BindView(R.id.refresh_layout)
     SwipeRefreshLayout mRefreshLayout;
+
     SearchView searchView;
 
     Map<String, String> queryParameters;
@@ -67,11 +79,7 @@ public class MainActivity extends AppCompatActivity implements StackView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Defining UI elements
-        mQuestionsRV = findViewById(R.id.questions_rv);
-        mLoadingPB = findViewById(R.id.loading_pb);
-        mRefreshLayout = findViewById(R.id.refresh_layout);
-        mErrorTV = findViewById(R.id.error_tv);
+        ButterKnife.bind(this);
 
         //Preparing the list
         mQuestionsRV.setLayoutManager(new LinearLayoutManager(this));
@@ -80,8 +88,7 @@ public class MainActivity extends AppCompatActivity implements StackView {
         mAdapter = new QuestionAdapter(MainActivity.this, questionList);
 
         //Initializing the StackPresenter
-        StackSearchAPI searchAPI = NetworkUtils.getRetrofit().create(StackSearchAPI.class);
-        stackPresenter = new StackPresenterImplementation(this, searchAPI);
+        stackPresenter = new StackPresenterImplementation(this);
 
         //Getting data from SharedPref
         preferences = getSharedPreferences(getString(R.string.preference_root_key), Context.MODE_PRIVATE);
@@ -178,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements StackView {
             queryParameters.put(SORT_PARAM, sortParameter);
             queryParameters.put(ORDER_PARAM, orderParameter);
 
-            stackPresenter.getQuestions(queryParameters);
+            stackPresenter.getQuestions(this,queryParameters);
 
         } else {
 
@@ -237,8 +244,4 @@ public class MainActivity extends AppCompatActivity implements StackView {
         mLoadingPB.setVisibility(View.INVISIBLE);
     }
 
-    @Override
-    public void observeOnData(StackQuestion sq) {
-
-    }
 }
